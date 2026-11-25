@@ -1,0 +1,243 @@
+/*
+ * Design tokens. Components use these variables, not raw values.
+ * The theme is "dark fantasy": a night background, stone panels,
+ * parchment quest cards, and ember and gold accents.
+ */
+:root {
+  /* Night and stone surfaces */
+  --color-bg: #0e0c11;
+  --color-bg-top: #241621;
+  --color-surface: #1d1921;
+  --color-surface-raised: #272129;
+  --color-border: #4a3d45;
+  --color-text: #f1e8d8;
+  --color-muted: #b9ab95;
+
+  /* Accents */
+  --color-gold: #f0c46a;
+  --color-gold-dark: #b8862f;
+  --color-ember: #e8743b;
+  --color-ember-dark: #b6461c;
+  --color-on-accent: #1d1006;
+
+  /* State colors on the dark surface */
+  --color-good: #7fd69a;
+  --color-good-bg: #173022;
+  --color-warn: #f3bd5a;
+  --color-warn-bg: #3a2a10;
+  --color-bad: #ff8a7a;
+  --color-bad-bg: #3d1716;
+
+  /* Parchment (quest cards) and the ink on it */
+  --parchment: #f2e5c6;
+  --parchment-edge: #d9c39a;
+  --ink: #2e2014;
+  --ink-muted: #5e4630;
+  --ink-good: #1d5a2e;
+  --ink-good-bg: #d4e8c6;
+  --ink-warn: #7a4a00;
+  --ink-warn-bg: #f7dfa6;
+  --ink-bad: #9c1f16;
+  --ink-bad-bg: #f6cfc6;
+
+  /* Fonts. Cinzel is self-hosted with @fontsource (see main.ts). */
+  --font-display: 'Cinzel', Georgia, 'Times New Roman', serif;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-story: Georgia, 'Times New Roman', serif;
+
+  /* Spacing, radius, shadow */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --radius: 10px;
+  --radius-small: 6px;
+  --shadow: 0 8px 24px rgb(0 0 0 / 45%);
+  --glow-gold: 0 0 0 2px var(--color-gold), 0 0 22px rgb(240 196 106 / 45%);
+  /* The move that auto-play is about to run. Ember, so it differs from the gold advice. */
+  --glow-auto: 0 0 0 3px var(--color-ember), 0 0 26px rgb(232 116 59 / 70%);
+  --transition: 150ms ease-out;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  line-height: 1.45;
+  background-color: var(--color-bg);
+  /* An ember glow at the top and a faint diagonal texture. CSS only, no images. */
+  background-image:
+    radial-gradient(ellipse 80% 40% at 50% 0%, rgb(232 116 59 / 22%), transparent 70%),
+    repeating-linear-gradient(45deg, rgb(255 255 255 / 1.5%) 0 2px, transparent 2px 6px),
+    linear-gradient(180deg, var(--color-bg-top) 0%, var(--color-bg) 45rem);
+}
+
+h1,
+h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-2);
+  color: var(--color-gold);
+  font-size: 1rem;
+}
+
+/* A thin gold line after each section title. */
+h2::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-gold-dark), transparent);
+}
+
+/* The stone panel that most sections use. */
+.panel {
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--color-surface-raised), var(--color-surface));
+  box-shadow: var(--shadow);
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  min-height: 2.5rem;
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--color-gold-dark);
+  border-radius: var(--radius-small);
+  background: var(--color-surface-raised);
+  color: var(--color-gold);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color var(--transition),
+    box-shadow var(--transition),
+    transform var(--transition);
+}
+
+button:hover:not(:disabled) {
+  background: #352b33;
+  box-shadow: 0 0 12px rgb(240 196 106 / 25%);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+/* The main action: an ember button with dark text for good contrast. */
+button.primary {
+  border-color: var(--color-ember-dark);
+  background: linear-gradient(180deg, var(--color-gold), var(--color-ember));
+  color: var(--color-on-accent);
+}
+
+button.primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, #f7d283, #f08548);
+  box-shadow: 0 0 16px rgb(232 116 59 / 55%);
+}
+
+/* A larger button for the main call to action of a screen. */
+button.big {
+  min-height: 3rem;
+  margin-top: var(--space-3);
+  padding: 0.6rem 2rem;
+  font-size: 1.1rem;
+}
+
+/* A smaller button for tool bars. */
+button.small {
+  min-height: 2rem;
+  white-space: nowrap;
+  padding: 0.2rem 0.75rem;
+  font-size: 0.85rem;
+}
+
+button:disabled {
+  border-color: #3a333b;
+  background: #2a252c;
+  color: #9a909c;
+  cursor: not-allowed;
+}
+
+input,
+select {
+  min-height: 2.5rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-small);
+  background: #141117;
+  color: var(--color-text);
+}
+
+/* A custom select: the native arrow is hidden and a gold chevron is drawn instead. */
+select {
+  appearance: none;
+  padding-right: 2.25rem;
+  border-color: var(--color-gold-dark);
+  background-color: var(--color-surface);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23f0c46a' d='M6.4 8.6 12 14.2l5.6-5.6L19 10l-7 7-7-7Z'/%3E%3C/svg%3E");
+  background-position: right 0.6rem center;
+  background-repeat: no-repeat;
+  background-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+select:hover {
+  border-color: var(--color-gold);
+}
+
+option {
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+input[type='checkbox'] {
+  min-height: auto;
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--color-ember);
+}
+
+/* The focus ring must be visible for keyboard users. */
+:focus-visible {
+  outline: 3px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+/* Auto-play: the glow of the move to run grows and shrinks. */
+@keyframes auto-glow {
+  50% {
+    box-shadow:
+      0 0 0 5px rgb(232 116 59 / 45%),
+      0 0 34px rgb(232 116 59 / 90%);
+  }
+}
+
+/* Turn off motion for users who ask for less motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

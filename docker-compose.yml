@@ -1,0 +1,28 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - '127.0.0.1:3100:3100'
+    environment:
+      # The browser origin of the frontend. Must match the frontend port below.
+      FRONTEND_ORIGIN: http://localhost:5173
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://127.0.0.1:3100/api/health']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        VITE_API_URL: http://localhost:3100/api
+    # nginx listens on 8080 inside the container. The browser uses 5173, so CORS works.
+    ports:
+      - '127.0.0.1:5173:8080'
+    depends_on:
+      backend:
+        condition: service_healthy

@@ -1,0 +1,15 @@
+import vue from '@vitejs/plugin-vue';
+import { defineConfig } from 'vitest/config';
+
+export default defineConfig({
+  plugins: [vue()],
+  server: { port: 5173, strictPort: true },
+  test: {
+    environment: 'jsdom',
+    coverage: {
+      include: ['src/**/*.{ts,vue}'],
+      exclude: ['src/**/*.spec.ts', 'src/main.ts', 'src/env.d.ts'],
+      reporter: ['text-summary', 'text', 'html'],
+    },
+  },
+});

@@ -1,0 +1,9 @@
+# Keep the build context small. The images install their own dependencies.
+**/node_modules
+**/dist
+**/coverage
+.git
+.github
+e2e
+*.log
+.env

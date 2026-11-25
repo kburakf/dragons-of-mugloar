@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+      # The browser tests use a mocked backend, so they need no network.
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npm run test:e2e:ui
+      # We do not run "npm run test:e2e" here. It calls the real game API,
+      # which is an external service and can be slow or down.
